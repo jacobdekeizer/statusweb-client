@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jacob
- * Date: 1-12-2017
- * Time: 19:27
- */
 
 namespace jacobdekeizer\Entities;
 

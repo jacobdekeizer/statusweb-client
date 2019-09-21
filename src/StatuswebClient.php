@@ -21,15 +21,16 @@ class StatuswebClient
 
     /**
      * StatuswebClient constructor.
-     * @param int $transport
+     *
+     * @param int $transportNumber
      * @param int $customerNumber
      * @param string $password
      */
-    public function __construct($transport, $customerNumber, $password)
+    public function __construct($transportNumber, $customerNumber, $password)
     {
         $this->credentials = [
             'Klantnr' => $customerNumber,
-            'Transporteur' => $transport,
+            'Transporteur' => $transportNumber,
             'Wachtwoord' => $password,
         ];
 
@@ -155,7 +156,7 @@ class StatuswebClient
 
     /**
      * Get estimated time of arrival
-     * Only works if shipment is transporting/arrived
+     * Only works if shipment is in transport/arrived
      *
      * @param $transportNumber
      * @return ETAResponse
