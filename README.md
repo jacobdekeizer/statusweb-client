@@ -1,4 +1,4 @@
-# Red je Pakketje api client
+# Statusweb API client for PHP
 
 [![Packagist Version](https://img.shields.io/packagist/v/jacobdekeizer/statusweb-client)](https://packagist.org/packages/jacobdekeizer/statusweb-client)
 [![Packagist](https://img.shields.io/packagist/l/jacobdekeizer/statusweb-client?color=brightgreen)](https://packagist.org/packages/jacobdekeizer/statusweb-client)
