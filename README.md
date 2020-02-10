@@ -30,9 +30,9 @@ $client = (new \JacobDeKeizer\Statusweb\Client())
 
 ```php
 $deliveryAddress = (new \JacobDeKeizer\Statusweb\Resources\Address())
-    ->setAddress('Lange laan')
+    ->setStreet('Lange laan')
     ->setCity('Zevenaar')
-    ->setHouseNumber(29)
+    ->setHouseNumber('29A')
     ->setPostalCode('9281EM')
     ->setCountryCode(\JacobDeKeizer\Statusweb\Enums\CountryCode::NETHERLANDS)
     ->setEmail('noreply@example.com')

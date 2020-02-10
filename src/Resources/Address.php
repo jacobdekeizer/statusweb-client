@@ -19,7 +19,7 @@ class Address implements Request
     /**
      * @var string
      */
-    private $address;
+    private $street;
 
     /**
      * @var string
@@ -88,21 +88,21 @@ class Address implements Request
     }
 
     /**
-     * @param string $address
+     * @param string $street
      * @return Address
      */
-    public function setAddress(string $address): Address
+    public function setStreet(string $street): Address
     {
-        $this->address = $address;
+        $this->street = $street;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getAddress(): string
+    public function getStreet(): string
     {
-        return $this->address;
+        return $this->street;
     }
 
     /**
@@ -221,7 +221,7 @@ class Address implements Request
         return [
             'Naam' => $this->getName(),
             'Tav' => $this->getToTheAttentionOf(),
-            'Adres' => $this->getAddress(),
+            'Adres' => $this->getStreet(),
             'Huisnr' => $this->getHouseNumber(),
             'Postcode' => $this->getPostalCode(),
             'Plaats' => $this->getCity(),
