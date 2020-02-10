@@ -4,7 +4,7 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class StatusData implements Response
+class StatusDataResponse implements Response
 {
     /**
      * @var float
@@ -48,9 +48,9 @@ class StatusData implements Response
 
     /**
      * @param float $transportNumber
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setTransportNumber(float $transportNumber): StatusData
+    public function setTransportNumber(float $transportNumber): StatusDataResponse
     {
         $this->transportNumber = $transportNumber;
         return $this;
@@ -66,9 +66,9 @@ class StatusData implements Response
 
     /**
      * @param string|null $reference
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setReference(?string $reference): StatusData
+    public function setReference(?string $reference): StatusDataResponse
     {
         $this->reference = $reference;
         return $this;
@@ -84,9 +84,9 @@ class StatusData implements Response
 
     /**
      * @param string $date
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setDate(string $date): StatusData
+    public function setDate(string $date): StatusDataResponse
     {
         $this->date = $date;
         return $this;
@@ -102,9 +102,9 @@ class StatusData implements Response
 
     /**
      * @param string $time
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setTime(string $time): StatusData
+    public function setTime(string $time): StatusDataResponse
     {
         $this->time = $time;
         return $this;
@@ -120,9 +120,9 @@ class StatusData implements Response
 
     /**
      * @param int $statusNumber
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setStatusNumber(int $statusNumber): StatusData
+    public function setStatusNumber(int $statusNumber): StatusDataResponse
     {
         $this->statusNumber = $statusNumber;
         return $this;
@@ -138,9 +138,9 @@ class StatusData implements Response
 
     /**
      * @param string $statusDescription
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setStatusDescription(string $statusDescription): StatusData
+    public function setStatusDescription(string $statusDescription): StatusDataResponse
     {
         $this->statusDescription = $statusDescription;
         return $this;
@@ -156,9 +156,9 @@ class StatusData implements Response
 
     /**
      * @param string|null $note
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setNote(?string $note): StatusData
+    public function setNote(?string $note): StatusDataResponse
     {
         $this->note = $note;
         return $this;
@@ -174,9 +174,9 @@ class StatusData implements Response
 
     /**
      * @param int $uid
-     * @return StatusData
+     * @return StatusDataResponse
      */
-    public function setUid(int $uid): StatusData
+    public function setUid(int $uid): StatusDataResponse
     {
         $this->uid = $uid;
         return $this;
@@ -192,7 +192,7 @@ class StatusData implements Response
 
     /**
      * @inheritDoc
-     * @return StatusData
+     * @return StatusDataResponse
      */
     public static function fromResponse(array $response): Response
     {

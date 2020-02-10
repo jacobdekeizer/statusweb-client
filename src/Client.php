@@ -32,6 +32,11 @@ class Client
     private $shipmentsEndpoint;
 
     /**
+     * @var Endpoints\LabelsEndpoint
+     */
+    private $labelsEndpoint;
+
+    /**
      * @var string
      */
     private $apiKey;
@@ -47,6 +52,7 @@ class Client
         $this->sessionStore = new DefaultSessionStore();
         $this->sessionEndpoint = new Endpoints\SessionEndpoint($this);
         $this->shipmentsEndpoint = new Endpoints\ShipmentsEndpoint($this);
+        $this->labelsEndpoint = new Endpoints\LabelsEndpoint($this);
     }
 
     /**
@@ -109,6 +115,14 @@ class Client
     public function shipments(): Endpoints\ShipmentsEndpoint
     {
         return $this->shipmentsEndpoint;
+    }
+
+    /**
+     * @return Endpoints\LabelsEndpoint
+     */
+    public function labels(): Endpoints\LabelsEndpoint
+    {
+        return $this->labelsEndpoint;
     }
 
     /**

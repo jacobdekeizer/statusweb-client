@@ -7,12 +7,12 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 class StatusResponse implements Response
 {
     /**
-     * @var StatusData[]
+     * @var StatusDataResponse[]
      */
     private $statuses;
 
     /**
-     * @param StatusData[] $statuses
+     * @param StatusDataResponse[] $statuses
      * @return StatusResponse
      */
     public function setStatuses(array $statuses): StatusResponse
@@ -22,7 +22,7 @@ class StatusResponse implements Response
     }
 
     /**
-     * @return StatusData[]
+     * @return StatusDataResponse[]
      */
     public function getStatuses(): array
     {
@@ -37,7 +37,7 @@ class StatusResponse implements Response
     {
         return (new self)
             ->setStatuses(array_map(static function (array $statusData) {
-                return StatusData::fromResponse($statusData);
+                return StatusDataResponse::fromResponse($statusData);
             }, $response['Status']));
     }
 }

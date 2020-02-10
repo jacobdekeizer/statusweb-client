@@ -7,12 +7,12 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 class SendShipmentsResponse implements Response
 {
     /**
-     * @var SendShipmentData[]
+     * @var SendShipmentResponse[]
      */
     private $sendShipmentData;
 
     /**
-     * @param SendShipmentData[] $sendShipmentData
+     * @param SendShipmentResponse[] $sendShipmentData
      * @return SendShipmentsResponse
      */
     public function setSendShipmentData(array $sendShipmentData): SendShipmentsResponse
@@ -22,7 +22,7 @@ class SendShipmentsResponse implements Response
     }
 
     /**
-     * @return SendShipmentData[]
+     * @return SendShipmentResponse[]
      */
     public function getSendShipmentData(): array
     {
@@ -36,8 +36,8 @@ class SendShipmentsResponse implements Response
     public static function fromResponse(array $response): Response
     {
         return (new self)
-            ->setSendShipmentData(array_map(static function (array $sendShipmentData): SendShipmentData {
-                return SendShipmentData::fromResponse($sendShipmentData);
+            ->setSendShipmentData(array_map(static function (array $sendShipmentData): SendShipmentResponse {
+                return SendShipmentResponse::fromResponse($sendShipmentData);
             }, $response['Zendingen'] ?? []));
     }
 }

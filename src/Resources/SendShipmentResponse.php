@@ -4,7 +4,7 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class SendShipmentData implements Response
+class SendShipmentResponse implements Response
 {
     /**
      * @var float
@@ -18,9 +18,9 @@ class SendShipmentData implements Response
 
     /**
      * @param float $transportNumber
-     * @return SendShipmentData
+     * @return SendShipmentResponse
      */
-    public function setTransportNumber(float $transportNumber): SendShipmentData
+    public function setTransportNumber(float $transportNumber): SendShipmentResponse
     {
         $this->transportNumber = $transportNumber;
         return $this;
@@ -36,9 +36,9 @@ class SendShipmentData implements Response
 
     /**
      * @param string|null $reference
-     * @return SendShipmentData
+     * @return SendShipmentResponse
      */
-    public function setReference(?string $reference): SendShipmentData
+    public function setReference(?string $reference): SendShipmentResponse
     {
         $this->reference = $reference;
         return $this;
@@ -54,7 +54,7 @@ class SendShipmentData implements Response
 
     /**
      * @inheritDoc
-     * @return SendShipmentData
+     * @return SendShipmentResponse
      */
     public static function fromResponse(array $response): Response
     {

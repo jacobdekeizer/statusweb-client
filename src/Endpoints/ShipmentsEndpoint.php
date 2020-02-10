@@ -89,7 +89,7 @@ class ShipmentsEndpoint extends BaseEndpoint
 
         $data = $this->validateAndExtractData('GetStatusweblinkVrachtnummerResult', $result);
 
-        return $data['Statusweblink'] ?? '';
+        return $data['Statusweblink'];
     }
 
     /**

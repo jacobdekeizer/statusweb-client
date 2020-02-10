@@ -84,6 +84,6 @@ class LabelResponse implements Response
         return (new self)
             ->setTransportNumber($response['Vrachtnummer'])
             ->setReference($response['Kenmerk'] ?? null)
-            ->setLabels($response['LabelsEndpoint'] ?? null);
+            ->setLabels($response['Labels'] ?? null);
     }
 }
