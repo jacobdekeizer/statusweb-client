@@ -7,7 +7,7 @@ use JacobDeKeizer\Statusweb\Contracts\Request;
 class Shipment implements Request
 {
     /**
-     * @var Address
+     * @var Address|null
      */
     private $loadingAddress;
 
@@ -87,19 +87,19 @@ class Shipment implements Request
     private $labelData;
 
     /**
-     * @param Address $loadingAddress
+     * @param Address|null $loadingAddress
      * @return Shipment
      */
-    public function setLoadingAddress(Address $loadingAddress): Shipment
+    public function setLoadingAddress(?Address $loadingAddress): Shipment
     {
         $this->loadingAddress = $loadingAddress;
         return $this;
     }
 
     /**
-     * @return Address
+     * @return Address|null
      */
-    public function getLoadingAddress(): Address
+    public function getLoadingAddress(): ?Address
     {
         return $this->loadingAddress;
     }
@@ -395,7 +395,7 @@ class Shipment implements Request
     {
         return [
             'Zending' => [
-                'Laadadres' => $this->loadingAddress->toRequest(),
+                'Laadadres' => $this->getLoadingAddress() ? $this->getLoadingAddress()->toRequest() : null,
                 'Losadres' => $this->deliveryAddress->toRequest(),
                 'Kenmerk' => $this->getReference(),
                 'Zendingsoort' => $this->getType(),

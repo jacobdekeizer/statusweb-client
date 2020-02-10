@@ -40,8 +40,6 @@ $deliveryAddress = (new \JacobDeKeizer\Statusweb\Resources\Address())
     ->setPhoneNumber('+31612345678')
     ->setName('Gijs Boersma');
 
-$loadingAddress = $deliveryAddress; // For this demo we use the same address
-
 $labelData = (new \JacobDeKeizer\Statusweb\Resources\LabelData())
     ->setLabelFormat(\JacobDeKeizer\Statusweb\Enums\LabelFormat::PDF)
     ->setReturnLabel(true); // return the pdf label in the response
@@ -54,7 +52,6 @@ $shipmentRow = (new \JacobDeKeizer\Statusweb\Resources\ShipmentRow())
 $shipment = (new \JacobDeKeizer\Statusweb\Resources\Shipment())
     ->setReference('My reference')
     ->setDeliveryAddress($deliveryAddress)
-    ->setLoadingAddress($loadingAddress)
     ->setType(1) // Statusweb -> Tabellen -> Zendingsoorten
     ->setDirectSend(true) // when true the shipment is confirmed and can't be deleted
     ->setLabelData($labelData)
