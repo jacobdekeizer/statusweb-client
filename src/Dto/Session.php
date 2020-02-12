@@ -67,7 +67,7 @@ class Session implements Dto
      * @inheritDoc
      * @return Session
      */
-    public function fromArray(array $data): Dto
+    public static function fromArray(array $data): Dto
     {
         return (new self)
             ->setSessionId($data['session_id'])

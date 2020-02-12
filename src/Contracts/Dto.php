@@ -13,5 +13,5 @@ interface Dto
      * @param array $data
      * @return Dto
      */
-    public function fromArray(array $data): Dto;
+    public static function fromArray(array $data): Dto;
 }
