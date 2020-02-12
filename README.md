@@ -92,7 +92,7 @@ $statusResponse->getStatuses();
 ```
 
 ### Get statusweb status url
-> Get de statusweb status url -> does only work when the shipment is in transport or has arrived
+> Get the statusweb status url -> does only work when the shipment is in transport or has arrived
 ```php
 $statusLink = $client->shipments()->getStatusUrl(12345678); // transportNumber
 ```
@@ -107,6 +107,21 @@ $etaResponse = $client->shipments()->getEstimatedTimeOfArrival(12345678); // tra
 > This endpoint does only work if the shipment isn't confirmed by the send endpoint and directSend for the shipment was false
 ```php
 $labelResponse = $client->labels()->get(9207289743, \JacobDeKeizer\Statusweb\Enums\LabelFormat::PDF);
+```
+
+### Exceptions
+
+Each endpoint can throw a `StatuswebErrorResponse` or `StatuswebException`.
+The `StatuswebErrorResponse` contains the error code and message from statusweb.
+For example:
+```php
+try {
+    $statusLink = $client->shipments()->getStatusUrl(12345678);
+} catch (\JacobDeKeizer\Statusweb\Exceptions\StatuswebErrorResponse $statuswebErrorResponse) {
+    $hasLink = $statuswebErrorResponse->getCode() === \JacobDeKeizer\Statusweb\Enums\ResponseCode::NO_STATUS_URL_FOR_SHIPMENT;
+} catch (\JacobDeKeizer\Statusweb\Exceptions\StatuswebException $statuswebException) {
+    $originalException = $statuswebException->getPrevious(); // do something
+}
 ```
 
 ## Register your own session store implementation (Optional)

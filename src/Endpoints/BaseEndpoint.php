@@ -5,6 +5,7 @@ namespace JacobDeKeizer\Statusweb\Endpoints;
 use DateTime;
 use JacobDeKeizer\Statusweb\Client;
 use JacobDeKeizer\Statusweb\Dto\Session;
+use JacobDeKeizer\Statusweb\Enums\ResponseCode;
 use JacobDeKeizer\Statusweb\Exceptions\StatuswebErrorResponse;
 use JacobDeKeizer\Statusweb\Exceptions\StatuswebException;
 use Throwable;
@@ -73,7 +74,7 @@ abstract class BaseEndpoint
             throw new StatuswebException('Invalid response: ' . json_encode($data));
         }
 
-        if ($data['Errorcode'] !== 1) {
+        if ($data['Errorcode'] !== ResponseCode::OK) {
             throw StatuswebErrorResponse::fromCode($data['Errorcode'], $data['Errorstring'] ?? '');
         }
     }
