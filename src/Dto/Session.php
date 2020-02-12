@@ -2,7 +2,9 @@
 
 namespace JacobDeKeizer\Statusweb\Dto;
 
-class Session
+use JacobDeKeizer\Statusweb\Contracts\Dto;
+
+class Session implements Dto
 {
     /**
      * @var string
@@ -48,5 +50,27 @@ class Session
     public function getExpirationDate(): string
     {
         return $this->expirationDate;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function toArray(): array
+    {
+        return [
+            'session_id' => $this->getSessionId(),
+            'expiration_date' => $this->getExpirationDate(),
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     * @return Session
+     */
+    public function fromArray(array $data): Dto
+    {
+        return (new self)
+            ->setSessionId($data['session_id'])
+            ->setExpirationDate($data['expiration_date']);
     }
 }
