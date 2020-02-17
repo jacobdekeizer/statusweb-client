@@ -4,7 +4,7 @@
 [![Packagist](https://img.shields.io/packagist/l/jacobdekeizer/statusweb-client?color=brightgreen)](https://packagist.org/packages/jacobdekeizer/statusweb-client)
 [![Packagist](https://img.shields.io/packagist/dt/jacobdekeizer/statusweb-client?color=brightgreen)](https://packagist.org/packages/jacobdekeizer/statusweb-client)
 
-[Statusweb API documentation](https://www.statusweb.nl/DfEngine/Resource.asp?resource=fUVRYykH20cyyGDWSFHcudnyYovtsJPMviMCiH-S_zcm3qlw50UQf-gGtQTx9bENdgvl2pvJjErcN2sh67uHRR9rApGezWocU7hMuK8jZCbR4BKiqoLXp_8mnHo1aPmetTJI4PV_9CFv0X2O0hD5pQ==) (To view the documentation you have to be logged in on statusweb)
+Get your api keys from Statusweb > Help > Statusweb API. On this page you can also get the Statusweb API documentation.
 
 ## Installation
 
