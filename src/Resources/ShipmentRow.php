@@ -245,7 +245,7 @@ class ShipmentRow implements Request
             'Aantal' => $this->getAmount(),
             'Eenheid' => $this->getUnit(),
             'Gewicht' => $this->getWeight(),
-            'Omschrijving' => $this->getWeight(),
+            'Omschrijving' => $this->getDescription(),
             'Artikelnr' => $this->getArticleNumber(),
             'Lengte' => $this->getLength(),
             'Breedte' => $this->getWidth(),
