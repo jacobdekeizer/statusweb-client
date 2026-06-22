@@ -6,7 +6,6 @@
 - PHP requirement raised to `>=8.5`
 - Statusweb SOAP API upgraded from v4 to v6
 - All `Vrachtnummer` parameters and response fields renamed to `Zendingnummer` (shipment number)
-- `Address::toRequest()` field `Huisnr` renamed to `Huisnummer` (matches v6 API)
 - `ShipmentsEndpoint::getStatus()` parameter changed from `float` to `int`
 - `ShipmentsEndpoint::delete()` parameter changed from `float` to `int`
 - `ShipmentsEndpoint::getStatusUrl()` now returns `StatusweblinkResponse` instead of `string`
@@ -59,7 +58,7 @@
 - `Wms\DeliveryStatusItem`, `Wms\DeliveryStatusResponse`
 
 #### Enhancements to existing resources
-- `ShipmentRow` — added `Barcodes` and `ADR` fields
+- `ShipmentRow` — added `barcodes` (BarcodeData[]) and `adr` (AdrData) properties (not sent in `PutZending`; API does not accept these fields in `ZendingregelData`)
 - `ShipmentResponse` — added `statuswebLink`, `labelLength`, `barcodes`, `rowIds`
 - `SendShipmentResponse` — added `statuswebLink`
 - `LabelResponse` — added `labelLength`, `barcodes`
