@@ -225,7 +225,7 @@ class ShipmentInfoResponse implements Response
             ->setName($data['Naam'] ?? '')
             ->setToTheAttentionOf($data['Tav'] ?? null)
             ->setStreet($data['Adres'] ?? '')
-            ->setHouseNumber($data['Huisnummer'] ?? '')
+            ->setHouseNumber($data['Huisnr'] ?? '')
             ->setPostalCode($data['Postcode'] ?? '')
             ->setCity($data['Plaats'] ?? '')
             ->setCountryCode((int) ($data['Landcode'] ?? 0))
