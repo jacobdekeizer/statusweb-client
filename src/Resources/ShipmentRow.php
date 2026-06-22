@@ -177,16 +177,6 @@ class ShipmentRow implements Request
             'Laadmeters' => $this->getLoadMeters(),
         ];
 
-        if ($this->barcodes !== []) {
-            $data['Barcodes'] = [
-                'BarcodeData' => array_map(static fn(BarcodeData $b) => $b->toRequest(), $this->barcodes),
-            ];
-        }
-
-        if ($this->adr !== null) {
-            $data['ADR'] = $this->adr->toRequest();
-        }
-
         return $data;
     }
 }
