@@ -222,7 +222,7 @@ class Address implements Request
             'Naam' => $this->getName(),
             'Tav' => $this->getToTheAttentionOf(),
             'Adres' => $this->getStreet(),
-            'Huisnummer' => $this->getHouseNumber(),
+            'Huisnr' => $this->getHouseNumber(),
             'Postcode' => $this->getPostalCode(),
             'Plaats' => $this->getCity(),
             'Landcode' => $this->getCountryCode(),
