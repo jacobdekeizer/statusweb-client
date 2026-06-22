@@ -40,12 +40,12 @@ abstract class BaseEndpoint
 
     protected function validateResponse(array $data): void
     {
-        if (array_key_exists('ErrorCode', $data) === false) {
+        if (array_key_exists('Errorcode', $data) === false) {
             throw new StatuswebException('Invalid response: ' . json_encode($data));
         }
 
-        if ($data['ErrorCode'] !== ResponseCode::OK) {
-            throw StatuswebErrorResponse::fromCode($data['ErrorCode'], $data['ErrorString'] ?? '');
+        if ($data['Errorcode'] !== ResponseCode::OK) {
+            throw StatuswebErrorResponse::fromCode($data['Errorcode'], $data['Errorstring'] ?? '');
         }
     }
 
