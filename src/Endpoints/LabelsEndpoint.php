@@ -9,16 +9,13 @@ use JacobDeKeizer\Statusweb\Resources\LabelResponse;
 class LabelsEndpoint extends BaseEndpoint
 {
     /**
-     * @param float $transportNumber
-     * @param int $labelFormat
-     * @return LabelResponse
      * @throws StatuswebErrorResponse
      * @throws StatuswebException
      */
-    public function get(float $transportNumber, int $labelFormat): LabelResponse
+    public function get(int $shipmentNumber, int $labelFormat): LabelResponse
     {
         $result = $this->doRequest('GetLabel', [
-            'Vrachtnummer' => $transportNumber,
+            'Zendingnummer' => $shipmentNumber,
             'Formaat' => $labelFormat,
         ]);
 

@@ -4,13 +4,15 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class LabelResponse implements Response
+class AddShipmentRowResponse implements Response
 {
     private int $shipmentNumber;
     private ?string $reference;
     private ?string $labels;
     private ?int $labelLength;
+    private ?string $statuswebLink;
     private array $barcodes;
+    private array $rowIds;
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -56,6 +58,17 @@ class LabelResponse implements Response
         return $this->labelLength;
     }
 
+    public function setStatuswebLink(?string $statuswebLink): static
+    {
+        $this->statuswebLink = $statuswebLink;
+        return $this;
+    }
+
+    public function getStatuswebLink(): ?string
+    {
+        return $this->statuswebLink;
+    }
+
     /**
      * @param string[] $barcodes
      */
@@ -71,6 +84,21 @@ class LabelResponse implements Response
         return $this->barcodes;
     }
 
+    /**
+     * @param int[] $rowIds
+     */
+    public function setRowIds(array $rowIds): static
+    {
+        $this->rowIds = $rowIds;
+        return $this;
+    }
+
+    /** @return int[] */
+    public function getRowIds(): array
+    {
+        return $this->rowIds;
+    }
+
     public static function fromResponse(array $response): static
     {
         return (new static)
@@ -78,7 +106,9 @@ class LabelResponse implements Response
             ->setReference($response['Kenmerk'] ?? null)
             ->setLabels($response['Labels'] ?? null)
             ->setLabelLength(isset($response['LabelLengte']) ? (int) $response['LabelLengte'] : null)
-            ->setBarcodes(self::extractBarcodes($response));
+            ->setStatuswebLink($response['StatuswebLink'] ?? null)
+            ->setBarcodes(self::extractBarcodes($response))
+            ->setRowIds(self::extractIds($response['Regel_IDs'] ?? null));
     }
 
     private static function extractBarcodes(array $response): array
@@ -91,5 +121,13 @@ class LabelResponse implements Response
             return [$data['Barcode']];
         }
         return array_column($data, 'Barcode');
+    }
+
+    private static function extractIds(mixed $ids): array
+    {
+        if ($ids === null || !is_array($ids)) {
+            return [];
+        }
+        return array_values(array_filter($ids, 'is_numeric'));
     }
 }

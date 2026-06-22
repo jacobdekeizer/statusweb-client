@@ -6,60 +6,35 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class DeleteShipmentResponse implements Response
 {
-    /**
-     * @var float
-     */
-    private $transportNumber;
+    private int $shipmentNumber;
+    private ?string $reference;
 
-    /**
-     * @var string|null
-     */
-    private $reference;
-
-    /**
-     * @param float $transportNumber
-     * @return DeleteShipmentResponse
-     */
-    public function setTransportNumber(float $transportNumber): DeleteShipmentResponse
+    public function setShipmentNumber(int $shipmentNumber): static
     {
-        $this->transportNumber = $transportNumber;
+        $this->shipmentNumber = $shipmentNumber;
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getTransportNumber(): float
+    public function getShipmentNumber(): int
     {
-        return $this->transportNumber;
+        return $this->shipmentNumber;
     }
 
-    /**
-     * @param string|null $reference
-     * @return DeleteShipmentResponse
-     */
-    public function setReference(?string $reference): DeleteShipmentResponse
+    public function setReference(?string $reference): static
     {
         $this->reference = $reference;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    /**
-     * @inheritDoc
-     * @return DeleteShipmentResponse
-     */
-    public static function fromResponse(array $response): Response
+    public static function fromResponse(array $response): static
     {
-        return (new self)
-            ->setTransportNumber($response['Vrachtnummer'])
+        return (new static)
+            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
             ->setReference($response['Kenmerk'] ?? null);
     }
 }

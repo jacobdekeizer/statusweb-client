@@ -4,11 +4,12 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class SendShipmentResponse implements Response
+class PhotoResponse implements Response
 {
     private int $shipmentNumber;
     private ?string $reference;
-    private ?string $statuswebLink;
+    /** @var PhotoData[] */
+    private array $photos;
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -32,22 +33,35 @@ class SendShipmentResponse implements Response
         return $this->reference;
     }
 
-    public function setStatuswebLink(?string $statuswebLink): static
+    /**
+     * @param PhotoData[] $photos
+     */
+    public function setPhotos(array $photos): static
     {
-        $this->statuswebLink = $statuswebLink;
+        $this->photos = $photos;
         return $this;
     }
 
-    public function getStatuswebLink(): ?string
+    /** @return PhotoData[] */
+    public function getPhotos(): array
     {
-        return $this->statuswebLink;
+        return $this->photos;
     }
 
     public static function fromResponse(array $response): static
     {
+        $photos = [];
+        if (isset($response['Fotos']['FotoData'])) {
+            $data = $response['Fotos']['FotoData'];
+            if (isset($data['Bestandsnaam'])) {
+                $data = [$data];
+            }
+            $photos = array_map(static fn(array $f) => PhotoData::fromResponse($f), $data);
+        }
+
         return (new static)
             ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
             ->setReference($response['Kenmerk'] ?? null)
-            ->setStatuswebLink($response['StatuswebLink'] ?? null);
+            ->setPhotos($photos);
     }
 }

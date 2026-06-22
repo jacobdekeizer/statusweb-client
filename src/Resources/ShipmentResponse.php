@@ -6,84 +6,128 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class ShipmentResponse implements Response
 {
-    /**
-     * @var float
-     */
-    private $transportNumber;
+    private int $shipmentNumber;
+    private ?string $reference;
+    private ?string $labels;
+    private ?int $labelLength;
+    private ?string $statuswebLink;
+    private array $barcodes;
+    private array $rowIds;
 
-    /**
-     * @var string|null
-     */
-    private $reference;
-
-    /**
-     * @var string|null
-     */
-    private $labels;
-
-    /**
-     * @param float $transportNumber
-     * @return ShipmentResponse
-     */
-    public function setTransportNumber(float $transportNumber): ShipmentResponse
+    public function setShipmentNumber(int $shipmentNumber): static
     {
-        $this->transportNumber = $transportNumber;
+        $this->shipmentNumber = $shipmentNumber;
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getTransportNumber(): float
+    public function getShipmentNumber(): int
     {
-        return $this->transportNumber;
+        return $this->shipmentNumber;
     }
 
-    /**
-     * @param string|null $reference
-     * @return ShipmentResponse
-     */
-    public function setReference(?string $reference): ShipmentResponse
+    public function setReference(?string $reference): static
     {
         $this->reference = $reference;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    /**
-     * @param string|null $labels
-     * @return ShipmentResponse
-     */
-    public function setLabels(?string $labels): ShipmentResponse
+    public function setLabels(?string $labels): static
     {
         $this->labels = $labels;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLabels(): ?string
     {
         return $this->labels;
     }
 
-    /**
-     * @inheritDoc
-     * @return ShipmentResponse
-     */
-    public static function fromResponse(array $response): Response
+    public function setLabelLength(?int $labelLength): static
     {
-        return (new self)
-            ->setTransportNumber($response['Vrachtnummer'])
+        $this->labelLength = $labelLength;
+        return $this;
+    }
+
+    public function getLabelLength(): ?int
+    {
+        return $this->labelLength;
+    }
+
+    public function setStatuswebLink(?string $statuswebLink): static
+    {
+        $this->statuswebLink = $statuswebLink;
+        return $this;
+    }
+
+    public function getStatuswebLink(): ?string
+    {
+        return $this->statuswebLink;
+    }
+
+    /**
+     * @param string[] $barcodes
+     */
+    public function setBarcodes(array $barcodes): static
+    {
+        $this->barcodes = $barcodes;
+        return $this;
+    }
+
+    /** @return string[] */
+    public function getBarcodes(): array
+    {
+        return $this->barcodes;
+    }
+
+    /**
+     * @param int[] $rowIds
+     */
+    public function setRowIds(array $rowIds): static
+    {
+        $this->rowIds = $rowIds;
+        return $this;
+    }
+
+    /** @return int[] */
+    public function getRowIds(): array
+    {
+        return $this->rowIds;
+    }
+
+    public static function fromResponse(array $response): static
+    {
+        return (new static)
+            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
             ->setReference($response['Kenmerk'] ?? null)
-            ->setLabels($response['Labels'] ?? null);
+            ->setLabels($response['Labels'] ?? null)
+            ->setLabelLength(isset($response['LabelLengte']) ? (int) $response['LabelLengte'] : null)
+            ->setStatuswebLink($response['StatuswebLink'] ?? null)
+            ->setBarcodes(self::extractBarcodes($response))
+            ->setRowIds(self::extractIds($response['Regel_IDs'] ?? null));
+    }
+
+    private static function extractBarcodes(array $response): array
+    {
+        if (!isset($response['Barcodes']['BarcodeData'])) {
+            return [];
+        }
+        $data = $response['Barcodes']['BarcodeData'];
+        if (isset($data['Barcode'])) {
+            return [$data['Barcode']];
+        }
+        return array_column($data, 'Barcode');
+    }
+
+    private static function extractIds(mixed $ids): array
+    {
+        if ($ids === null || !is_array($ids)) {
+            return [];
+        }
+        return array_values(array_filter($ids, 'is_numeric'));
     }
 }

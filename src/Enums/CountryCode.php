@@ -12,6 +12,7 @@ class CountryCode
     public const HUNGARY = 36;
     public const ITALY = 39;
     public const PORTUGAL = 351;
+    public const LUXEMBOURG = 352;
     public const IRELAND = 353;
     public const FINLAND = 358;
     public const SLOVENIA = 386;

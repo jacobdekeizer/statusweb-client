@@ -63,10 +63,6 @@ class Session implements Dto
         ];
     }
 
-    /**
-     * @inheritDoc
-     * @return Session
-     */
     public static function fromArray(array $data): Dto
     {
         return (new self)

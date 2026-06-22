@@ -6,242 +6,165 @@ use JacobDeKeizer\Statusweb\Contracts\Request;
 
 class ShipmentRow implements Request
 {
-    /**
-     * @var int
-     */
-    private $amount;
+    private int $amount;
+    private string $unit;
+    private int $weight;
+    private ?string $description = null;
+    private ?string $articleNumber = null;
+    private ?int $length = null;
+    private ?int $width = null;
+    private ?int $height = null;
+    private ?int $volume = null;
+    private ?int $loadMeters = null;
+    /** @var BarcodeData[] */
+    private array $barcodes = [];
+    private ?AdrData $adr = null;
 
-    /**
-     * @var string
-     */
-    private $unit;
-
-    /**
-     * @var int
-     */
-    private $weight;
-
-    /**
-     * @var string|null
-     */
-    private $description;
-
-    /**
-     * @var string|null
-     */
-    private $articleNumber;
-
-    /**
-     * @var int|null
-     */
-    private $length;
-
-    /**
-     * @var int|null
-     */
-    private $width;
-
-    /**
-     * @var int|null
-     */
-    private $height;
-
-    /**
-     * @var int|null
-     */
-    private $volume;
-
-    /**
-     * @var int|null
-     */
-    private $loadMeters;
-
-    /**
-     * @param int $amount
-     * @return ShipmentRow
-     */
-    public function setAmount(int $amount): ShipmentRow
+    public function setAmount(int $amount): static
     {
         $this->amount = $amount;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getAmount(): int
     {
         return $this->amount;
     }
 
-    /**
-     * @param string $unit
-     * @return ShipmentRow
-     */
-    public function setUnit(string $unit): ShipmentRow
+    public function setUnit(string $unit): static
     {
         $this->unit = $unit;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUnit(): string
     {
         return $this->unit;
     }
 
-    /**
-     * @param int $weight
-     * @return ShipmentRow
-     */
-    public function setWeight(int $weight): ShipmentRow
+    public function setWeight(int $weight): static
     {
         $this->weight = $weight;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getWeight(): int
     {
         return $this->weight;
     }
 
-    /**
-     * @param string|null $description
-     * @return ShipmentRow
-     */
-    public function setDescription(?string $description): ShipmentRow
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string|null $articleNumber
-     * @return ShipmentRow
-     */
-    public function setArticleNumber(?string $articleNumber): ShipmentRow
+    public function setArticleNumber(?string $articleNumber): static
     {
         $this->articleNumber = $articleNumber;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getArticleNumber(): ?string
     {
         return $this->articleNumber;
     }
 
-    /**
-     * @param int|null $length
-     * @return ShipmentRow
-     */
-    public function setLength(?int $length): ShipmentRow
+    public function setLength(?int $length): static
     {
         $this->length = $length;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getLength(): ?int
     {
         return $this->length;
     }
 
-    /**
-     * @param int|null $width
-     * @return ShipmentRow
-     */
-    public function setWidth(?int $width): ShipmentRow
+    public function setWidth(?int $width): static
     {
         $this->width = $width;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getWidth(): ?int
     {
         return $this->width;
     }
 
-    /**
-     * @param int|null $height
-     * @return ShipmentRow
-     */
-    public function setHeight(?int $height): ShipmentRow
+    public function setHeight(?int $height): static
     {
         $this->height = $height;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getHeight(): ?int
     {
         return $this->height;
     }
 
-    /**
-     * @param int|null $volume
-     * @return ShipmentRow
-     */
-    public function setVolume(?int $volume): ShipmentRow
+    public function setVolume(?int $volume): static
     {
         $this->volume = $volume;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getVolume(): ?int
     {
         return $this->volume;
     }
 
-    /**
-     * @param int|null $loadMeters
-     * @return ShipmentRow
-     */
-    public function setLoadMeters(?int $loadMeters): ShipmentRow
+    public function setLoadMeters(?int $loadMeters): static
     {
         $this->loadMeters = $loadMeters;
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getLoadMeters(): ?int
     {
         return $this->loadMeters;
     }
 
     /**
-     * @inheritDoc
+     * @param BarcodeData[] $barcodes
      */
+    public function setBarcodes(array $barcodes): static
+    {
+        $this->barcodes = $barcodes;
+        return $this;
+    }
+
+    /** @return BarcodeData[] */
+    public function getBarcodes(): array
+    {
+        return $this->barcodes;
+    }
+
+    public function addBarcode(BarcodeData $barcode): static
+    {
+        $this->barcodes[] = $barcode;
+        return $this;
+    }
+
+    public function setAdr(?AdrData $adr): static
+    {
+        $this->adr = $adr;
+        return $this;
+    }
+
+    public function getAdr(): ?AdrData
+    {
+        return $this->adr;
+    }
+
     public function toRequest(): array
     {
-        return [
+        $data = [
             'Aantal' => $this->getAmount(),
             'Eenheid' => $this->getUnit(),
             'Gewicht' => $this->getWeight(),
@@ -253,5 +176,17 @@ class ShipmentRow implements Request
             'Volume' => $this->getVolume(),
             'Laadmeters' => $this->getLoadMeters(),
         ];
+
+        if ($this->barcodes !== []) {
+            $data['Barcodes'] = [
+                'BarcodeData' => array_map(static fn(BarcodeData $b) => $b->toRequest(), $this->barcodes),
+            ];
+        }
+
+        if ($this->adr !== null) {
+            $data['ADR'] = $this->adr->toRequest();
+        }
+
+        return $data;
     }
 }

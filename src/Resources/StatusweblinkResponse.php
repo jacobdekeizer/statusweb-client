@@ -4,11 +4,11 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class SendShipmentResponse implements Response
+class StatusweblinkResponse implements Response
 {
     private int $shipmentNumber;
     private ?string $reference;
-    private ?string $statuswebLink;
+    private string $statuswebLink;
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -32,13 +32,13 @@ class SendShipmentResponse implements Response
         return $this->reference;
     }
 
-    public function setStatuswebLink(?string $statuswebLink): static
+    public function setStatuswebLink(string $statuswebLink): static
     {
         $this->statuswebLink = $statuswebLink;
         return $this;
     }
 
-    public function getStatuswebLink(): ?string
+    public function getStatuswebLink(): string
     {
         return $this->statuswebLink;
     }
@@ -48,6 +48,6 @@ class SendShipmentResponse implements Response
         return (new static)
             ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
             ->setReference($response['Kenmerk'] ?? null)
-            ->setStatuswebLink($response['StatuswebLink'] ?? null);
+            ->setStatuswebLink($response['Statusweblink'] ?? '');
     }
 }
