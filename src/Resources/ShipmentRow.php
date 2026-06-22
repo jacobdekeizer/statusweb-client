@@ -164,7 +164,9 @@ class ShipmentRow implements Request
 
     public function toRequest(): array
     {
-        $data = [
+        $barcodes = array_map(static fn(BarcodeData $b) => $b->toRequest(), $this->barcodes);
+
+        return [
             'Aantal' => $this->getAmount(),
             'Eenheid' => $this->getUnit(),
             'Gewicht' => $this->getWeight(),
@@ -175,8 +177,8 @@ class ShipmentRow implements Request
             'Hoogte' => $this->getHeight(),
             'Volume' => $this->getVolume(),
             'Laadmeters' => $this->getLoadMeters(),
+            'Barcodes' => $barcodes ? ['BarcodeData' => $barcodes] : null,
+            'ADR' => $this->adr?->toRequest(),
         ];
-
-        return $data;
     }
 }
