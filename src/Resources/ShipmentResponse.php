@@ -6,13 +6,20 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class ShipmentResponse implements Response
 {
-    private int $shipmentNumber;
-    private ?string $reference;
-    private ?string $labels;
-    private ?int $labelLength;
-    private ?string $statuswebLink;
-    private array $barcodes;
-    private array $rowIds;
+    /**
+     * @param string[] $barcodes
+     * @param int[] $rowIds
+     */
+    public function __construct(
+        private int $shipmentNumber,
+        private ?string $reference = null,
+        private ?string $labels = null,
+        private ?int $labelLength = null,
+        private ?string $statuswebLink = null,
+        private array $barcodes = [],
+        private array $rowIds = [],
+    ) {
+    }
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -101,14 +108,15 @@ class ShipmentResponse implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setLabels($response['Labels'] ?? null)
-            ->setLabelLength(isset($response['LabelLengte']) ? (int) $response['LabelLengte'] : null)
-            ->setStatuswebLink($response['StatuswebLink'] ?? null)
-            ->setBarcodes(self::extractBarcodes($response))
-            ->setRowIds(self::extractIds($response['Regel_IDs'] ?? null));
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            labels: $response['Labels'] ?? null,
+            labelLength: isset($response['LabelLengte']) ? (int) $response['LabelLengte'] : null,
+            statuswebLink: $response['StatuswebLink'] ?? null,
+            barcodes: self::extractBarcodes($response),
+            rowIds: self::extractIds($response['Regel_IDs'] ?? null),
+        );
     }
 
     private static function extractBarcodes(array $response): array

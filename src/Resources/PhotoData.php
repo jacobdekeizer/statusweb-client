@@ -6,11 +6,14 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class PhotoData implements Response
 {
-    private string $filename;
-    private ?string $photo;
-    private ?int $photoLength;
-    private ?string $locX;
-    private ?string $locY;
+    public function __construct(
+        private string $filename,
+        private ?string $photo = null,
+        private ?int $photoLength = null,
+        private ?string $locX = null,
+        private ?string $locY = null,
+    ) {
+    }
 
     public function setFilename(string $filename): static
     {
@@ -69,11 +72,12 @@ class PhotoData implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setFilename($response['Bestandsnaam'] ?? '')
-            ->setPhoto($response['Foto'] ?? null)
-            ->setPhotoLength(isset($response['FotoLengte']) ? (int) $response['FotoLengte'] : null)
-            ->setLocX($response['LocX'] ?? null)
-            ->setLocY($response['LocY'] ?? null);
+        return new static(
+            filename: $response['Bestandsnaam'] ?? '',
+            photo: $response['Foto'] ?? null,
+            photoLength: isset($response['FotoLengte']) ? (int) $response['FotoLengte'] : null,
+            locX: $response['LocX'] ?? null,
+            locY: $response['LocY'] ?? null,
+        );
     }
 }

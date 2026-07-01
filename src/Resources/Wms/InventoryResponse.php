@@ -6,8 +6,13 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class InventoryResponse implements Response
 {
-    /** @var InventoryItem[] */
-    private array $items;
+    /**
+     * @param InventoryItem[] $items
+     */
+    public function __construct(
+        private array $items = [],
+    ) {
+    }
 
     /**
      * @param InventoryItem[] $items
@@ -35,6 +40,6 @@ class InventoryResponse implements Response
             $items = array_map(static fn(array $item) => InventoryItem::fromResponse($item), $data);
         }
 
-        return (new static)->setItems($items);
+        return new static(items: $items);
     }
 }

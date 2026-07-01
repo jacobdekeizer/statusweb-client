@@ -6,8 +6,13 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class SendShipmentsResponse implements Response
 {
-    /** @var SendShipmentResponse[] */
-    private array $shipments;
+    /**
+     * @param SendShipmentResponse[] $shipments
+     */
+    public function __construct(
+        private array $shipments = [],
+    ) {
+    }
 
     /**
      * @param SendShipmentResponse[] $shipments
@@ -41,6 +46,6 @@ class SendShipmentsResponse implements Response
             );
         }
 
-        return (new static)->setShipments($items);
+        return new static(shipments: $items);
     }
 }

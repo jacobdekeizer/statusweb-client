@@ -6,21 +6,24 @@ use JacobDeKeizer\Statusweb\Contracts\Request;
 
 class AdrData implements Request
 {
-    private string $unNumber;
-    private int $category;
-    private string $substanceName;
-    private ?string $technicalName = null;
-    private string $class;
-    private string $packagingGroup;
-    private string $label;
-    private int $factor;
-    private string $tunnelCode;
-    private bool $isEnvironmentallyHazardous = false;
-    private bool $isWaste = false;
-    private bool $isLq = false;
-    private int $weight;
-    private ?int $amount = null;
-    private ?string $packaging = null;
+    public function __construct(
+        private string $unNumber,
+        private int $category,
+        private string $substanceName,
+        private string $class,
+        private string $packagingGroup,
+        private string $label,
+        private int $factor,
+        private string $tunnelCode,
+        private int $weight,
+        private ?string $technicalName = null,
+        private bool $isEnvironmentallyHazardous = false,
+        private bool $isWaste = false,
+        private bool $isLq = false,
+        private ?int $amount = null,
+        private ?string $packaging = null,
+    ) {
+    }
 
     public function setUnNumber(string $unNumber): static
     {

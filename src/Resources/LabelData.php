@@ -6,15 +6,11 @@ use JacobDeKeizer\Statusweb\Contracts\Request;
 
 class LabelData implements Request
 {
-    /**
-     * @var bool
-     */
-    private $returnLabel;
-
-    /**
-     * @var int
-     */
-    private $labelFormat;
+    public function __construct(
+        private bool $returnLabel,
+        private int $labelFormat,
+    ) {
+    }
 
     /**
      * @param bool $returnLabel

@@ -6,8 +6,13 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class DeliveryStatusResponse implements Response
 {
-    /** @var DeliveryStatusItem[] */
-    private array $items;
+    /**
+     * @param DeliveryStatusItem[] $items
+     */
+    public function __construct(
+        private array $items = [],
+    ) {
+    }
 
     /**
      * @param DeliveryStatusItem[] $items
@@ -35,6 +40,6 @@ class DeliveryStatusResponse implements Response
             $items = array_map(static fn(array $item) => DeliveryStatusItem::fromResponse($item), $data);
         }
 
-        return (new static)->setItems($items);
+        return new static(items: $items);
     }
 }

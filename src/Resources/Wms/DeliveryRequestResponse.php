@@ -6,7 +6,10 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class DeliveryRequestResponse implements Response
 {
-    private int $deliveryId;
+    public function __construct(
+        private int $deliveryId,
+    ) {
+    }
 
     public function setDeliveryId(int $deliveryId): static
     {
@@ -21,7 +24,8 @@ class DeliveryRequestResponse implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setDeliveryId((int) ($response['UitslagID'] ?? 0));
+        return new static(
+            deliveryId: (int) ($response['UitslagID'] ?? 0),
+        );
     }
 }

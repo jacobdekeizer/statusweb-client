@@ -6,10 +6,13 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class EtaResponse implements Response
 {
-    private int $shipmentNumber;
-    private ?string $reference;
-    private string $from;
-    private string $until;
+    public function __construct(
+        private int $shipmentNumber,
+        private string $from,
+        private string $until,
+        private ?string $reference = null,
+    ) {
+    }
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -57,10 +60,11 @@ class EtaResponse implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setFrom($response['ETA_Van'] ?? '')
-            ->setUntil($response['ETA_Tot'] ?? '');
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            from: $response['ETA_Van'] ?? '',
+            until: $response['ETA_Tot'] ?? '',
+            reference: $response['Kenmerk'] ?? null,
+        );
     }
 }

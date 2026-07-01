@@ -6,12 +6,15 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class PodResponse implements Response
 {
-    private int $shipmentNumber;
-    private ?string $reference;
-    private ?string $pod;
-    private ?int $podLength;
-    private ?string $locX;
-    private ?string $locY;
+    public function __construct(
+        private int $shipmentNumber,
+        private ?string $reference = null,
+        private ?string $pod = null,
+        private ?int $podLength = null,
+        private ?string $locX = null,
+        private ?string $locY = null,
+    ) {
+    }
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -81,12 +84,13 @@ class PodResponse implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setPod($response['POD'] ?? null)
-            ->setPodLength(isset($response['PODLengte']) ? (int) $response['PODLengte'] : null)
-            ->setLocX($response['LocX'] ?? null)
-            ->setLocY($response['LocY'] ?? null);
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            pod: $response['POD'] ?? null,
+            podLength: isset($response['PODLengte']) ? (int) $response['PODLengte'] : null,
+            locX: $response['LocX'] ?? null,
+            locY: $response['LocY'] ?? null,
+        );
     }
 }

@@ -6,10 +6,15 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class StatusResponse implements Response
 {
-    /** @var StatusDataResponse[] */
-    private array $statuses;
-    private ?string $mark;
-    private bool $hasMore;
+    /**
+     * @param StatusDataResponse[] $statuses
+     */
+    public function __construct(
+        private bool $hasMore,
+        private array $statuses = [],
+        private ?string $mark = null,
+    ) {
+    }
 
     /**
      * @param StatusDataResponse[] $statuses
@@ -64,9 +69,10 @@ class StatusResponse implements Response
             );
         }
 
-        return (new static)
-            ->setStatuses($items)
-            ->setMark($response['Mark'] ?? null)
-            ->setHasMore(($response['More'] ?? 0) === 1);
+        return new static(
+            hasMore: ($response['More'] ?? 0) === 1,
+            statuses: $items,
+            mark: $response['Mark'] ?? null,
+        );
     }
 }

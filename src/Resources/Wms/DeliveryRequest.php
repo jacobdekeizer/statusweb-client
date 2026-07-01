@@ -7,17 +7,22 @@ use JacobDeKeizer\Statusweb\Resources\Address;
 
 class DeliveryRequest implements Request
 {
-    private Address $deliveryAddress;
-    /** @var ArticleData[] */
-    private array $articles = [];
-    private ?string $deliveryNote = null;
-    private ?string $deliveryDate = null;
-    private ?string $deliveryTimeFrom = null;
-    private ?string $deliveryTimeUntil = null;
-    private bool $directSend = false;
-    private ?string $reference = null;
-    private ?int $cashOnDeliveryAmount = null;
-    private int $shipmentType;
+    /**
+     * @param ArticleData[] $articles
+     */
+    public function __construct(
+        private Address $deliveryAddress,
+        private int $shipmentType,
+        private array $articles = [],
+        private ?string $deliveryNote = null,
+        private ?string $deliveryDate = null,
+        private ?string $deliveryTimeFrom = null,
+        private ?string $deliveryTimeUntil = null,
+        private bool $directSend = false,
+        private ?string $reference = null,
+        private ?int $cashOnDeliveryAmount = null,
+    ) {
+    }
 
     public function setDeliveryAddress(Address $deliveryAddress): static
     {

@@ -6,11 +6,17 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class LabelResponse implements Response
 {
-    private int $shipmentNumber;
-    private ?string $reference;
-    private ?string $labels;
-    private ?int $labelLength;
-    private array $barcodes;
+    /**
+     * @param string[] $barcodes
+     */
+    public function __construct(
+        private int $shipmentNumber,
+        private ?string $reference = null,
+        private ?string $labels = null,
+        private ?int $labelLength = null,
+        private array $barcodes = [],
+    ) {
+    }
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -73,12 +79,13 @@ class LabelResponse implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setLabels($response['Labels'] ?? null)
-            ->setLabelLength(isset($response['LabelLengte']) ? (int) $response['LabelLengte'] : null)
-            ->setBarcodes(self::extractBarcodes($response));
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            labels: $response['Labels'] ?? null,
+            labelLength: isset($response['LabelLengte']) ? (int) $response['LabelLengte'] : null,
+            barcodes: self::extractBarcodes($response),
+        );
     }
 
     private static function extractBarcodes(array $response): array

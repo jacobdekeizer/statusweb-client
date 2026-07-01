@@ -6,8 +6,11 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class ShipmentTypeTableItem implements Response
 {
-    private int $shipmentType;
-    private string $description;
+    public function __construct(
+        private int $shipmentType,
+        private string $description,
+    ) {
+    }
 
     public function setShipmentType(int $shipmentType): static
     {
@@ -33,9 +36,10 @@ class ShipmentTypeTableItem implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setShipmentType((int) ($response['Zendingsoort'] ?? 0))
-            ->setDescription($response['Omschrijving'] ?? '');
+        return new static(
+            shipmentType: (int) ($response['Zendingsoort'] ?? 0),
+            description: $response['Omschrijving'] ?? '',
+        );
     }
 
     public static function collectionFromResponse(array $items): array

@@ -6,19 +6,24 @@ use JacobDeKeizer\Statusweb\Contracts\Request;
 
 class ShipmentRow implements Request
 {
-    private int $amount;
-    private string $unit;
-    private int $weight;
-    private ?string $description = null;
-    private ?string $articleNumber = null;
-    private ?int $length = null;
-    private ?int $width = null;
-    private ?int $height = null;
-    private ?int $volume = null;
-    private ?int $loadMeters = null;
-    /** @var BarcodeData[] */
-    private array $barcodes = [];
-    private ?AdrData $adr = null;
+    /**
+     * @param BarcodeData[] $barcodes
+     */
+    public function __construct(
+        private int $amount,
+        private string $unit,
+        private int $weight,
+        private ?string $description = null,
+        private ?string $articleNumber = null,
+        private ?int $length = null,
+        private ?int $width = null,
+        private ?int $height = null,
+        private ?int $volume = null,
+        private ?int $loadMeters = null,
+        private array $barcodes = [],
+        private ?AdrData $adr = null,
+    ) {
+    }
 
     public function setAmount(int $amount): static
     {

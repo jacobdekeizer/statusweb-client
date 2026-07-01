@@ -4,6 +4,7 @@
 
 ### Breaking changes
 - PHP requirement raised to `>=8.5`
+- All resource and DTO objects now expose a promoted constructor; required (non-nullable) fields are constructor arguments, nullable fields default to `null`. Empty construction via `new X()` no longer works for objects with required fields — pass them to the constructor instead. Existing fluent setters/getters remain available for optional values.
 - Statusweb SOAP API upgraded from v4 to v6
 - All `Vrachtnummer` parameters and response fields renamed to `Zendingnummer` (shipment number)
 - `ShipmentsEndpoint::getStatus()` parameter changed from `float` to `int`

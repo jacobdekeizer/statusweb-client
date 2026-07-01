@@ -6,50 +6,18 @@ use JacobDeKeizer\Statusweb\Contracts\Request;
 
 class Address implements Request
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var string|null
-     */
-    private $toTheAttentionOf;
-
-    /**
-     * @var string
-     */
-    private $street;
-
-    /**
-     * @var string
-     */
-    private $houseNumber;
-
-    /**
-     * @var string
-     */
-    private $postalCode;
-
-    /**
-     * @var string
-     */
-    private $city;
-
-    /**
-     * @var int
-     */
-    private $countryCode;
-
-    /**
-     * @var string|null
-     */
-    private $phoneNumber;
-
-    /**
-     * @var string|null
-     */
-    private $email;
+    public function __construct(
+        private string $name,
+        private string $street,
+        private string $houseNumber,
+        private string $postalCode,
+        private string $city,
+        private int $countryCode,
+        private ?string $toTheAttentionOf = null,
+        private ?string $phoneNumber = null,
+        private ?string $email = null,
+    ) {
+    }
 
     /**
      * @param string $name

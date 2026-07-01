@@ -7,84 +7,27 @@ use JacobDeKeizer\Statusweb\Contracts\Request;
 class Shipment implements Request
 {
     /**
-     * @var Address|null
+     * @param ShipmentRow[] $shipmentRows
      */
-    private $loadingAddress;
-
-    /**
-     * @var Address
-     */
-    private $deliveryAddress;
-
-    /**
-     * @var string|null
-     */
-    private $reference;
-
-    /**
-     * @var int
-     */
-    private $type;
-
-    /**
-     * @var string|null
-     */
-    private $loadingDate;
-
-    /**
-     * @var string|null
-     */
-    private $loadingTimeFrom;
-
-    /**
-     * @var string|null
-     */
-    private $loadingTimeUntil;
-
-    /**
-     * @var string|null
-     */
-    private $loadingNote;
-
-    /**
-     * @var string|null
-     */
-    private $deliveryDate;
-
-    /**
-     * @var string|null
-     */
-    private $deliveryTimeFrom;
-
-    /**
-     * @var string|null
-     */
-    private $deliveryTimeUntil;
-
-    /**
-     * @var string|null
-     */
-    private $deliveryNote;
-
-    /**
-     * @var int|null
-     */
-    private $cashOnDeliveryAmount;
-
-    /**
-     * @var bool
-     */
-    private $directSend;
-
-    /**
-     * @var ShipmentRow[]
-     */
-    private $shipmentRows;
-
-    /**
-     * @var LabelData
-     */
-    private $labelData;
+    public function __construct(
+        private Address $deliveryAddress,
+        private int $type,
+        private bool $directSend,
+        private LabelData $labelData,
+        private ?Address $loadingAddress = null,
+        private ?string $reference = null,
+        private ?string $loadingDate = null,
+        private ?string $loadingTimeFrom = null,
+        private ?string $loadingTimeUntil = null,
+        private ?string $loadingNote = null,
+        private ?string $deliveryDate = null,
+        private ?string $deliveryTimeFrom = null,
+        private ?string $deliveryTimeUntil = null,
+        private ?string $deliveryNote = null,
+        private ?int $cashOnDeliveryAmount = null,
+        private array $shipmentRows = [],
+    ) {
+    }
 
     /**
      * @param Address|null $loadingAddress

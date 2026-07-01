@@ -6,14 +6,17 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class StatusDataResponse implements Response
 {
-    private int $shipmentNumber;
-    private ?string $reference;
-    private string $date;
-    private string $time;
-    private int $statusNumber;
-    private string $statusDescription;
-    private ?string $note;
-    private int $uid;
+    public function __construct(
+        private int $shipmentNumber,
+        private string $date,
+        private string $time,
+        private int $statusNumber,
+        private string $statusDescription,
+        private int $uid,
+        private ?string $reference = null,
+        private ?string $note = null,
+    ) {
+    }
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -105,14 +108,15 @@ class StatusDataResponse implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setDate($response['Datum'] ?? '')
-            ->setTime($response['Tijd'] ?? '')
-            ->setStatusNumber((int) ($response['StatusNummer'] ?? 0))
-            ->setStatusDescription($response['StatusOmschrijving'] ?? '')
-            ->setNote($response['Opmerking'] ?? null)
-            ->setUid((int) ($response['UID'] ?? 0));
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            date: $response['Datum'] ?? '',
+            time: $response['Tijd'] ?? '',
+            statusNumber: (int) ($response['StatusNummer'] ?? 0),
+            statusDescription: $response['StatusOmschrijving'] ?? '',
+            uid: (int) ($response['UID'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            note: $response['Opmerking'] ?? null,
+        );
     }
 }

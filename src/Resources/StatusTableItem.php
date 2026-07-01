@@ -6,8 +6,11 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class StatusTableItem implements Response
 {
-    private int $status;
-    private string $description;
+    public function __construct(
+        private int $status,
+        private string $description,
+    ) {
+    }
 
     public function setStatus(int $status): static
     {
@@ -33,9 +36,10 @@ class StatusTableItem implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setStatus((int) ($response['Status'] ?? 0))
-            ->setDescription($response['Omschrijving'] ?? '');
+        return new static(
+            status: (int) ($response['Status'] ?? 0),
+            description: $response['Omschrijving'] ?? '',
+        );
     }
 
     public static function collectionFromResponse(array $items): array

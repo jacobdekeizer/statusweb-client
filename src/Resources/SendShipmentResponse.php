@@ -6,9 +6,12 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class SendShipmentResponse implements Response
 {
-    private int $shipmentNumber;
-    private ?string $reference;
-    private ?string $statuswebLink;
+    public function __construct(
+        private int $shipmentNumber,
+        private ?string $reference = null,
+        private ?string $statuswebLink = null,
+    ) {
+    }
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -45,9 +48,10 @@ class SendShipmentResponse implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setStatuswebLink($response['StatuswebLink'] ?? null);
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            statuswebLink: $response['StatuswebLink'] ?? null,
+        );
     }
 }

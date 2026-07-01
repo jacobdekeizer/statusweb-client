@@ -6,10 +6,15 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class PhotoResponse implements Response
 {
-    private int $shipmentNumber;
-    private ?string $reference;
-    /** @var PhotoData[] */
-    private array $photos;
+    /**
+     * @param PhotoData[] $photos
+     */
+    public function __construct(
+        private int $shipmentNumber,
+        private ?string $reference = null,
+        private array $photos = [],
+    ) {
+    }
 
     public function setShipmentNumber(int $shipmentNumber): static
     {
@@ -59,9 +64,10 @@ class PhotoResponse implements Response
             $photos = array_map(static fn(array $f) => PhotoData::fromResponse($f), $data);
         }
 
-        return (new static)
-            ->setShipmentNumber((int) ($response['Zendingnummer'] ?? 0))
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setPhotos($photos);
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            photos: $photos,
+        );
     }
 }

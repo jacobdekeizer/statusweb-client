@@ -16,6 +16,10 @@ abstract class BaseEndpoint
     {
     }
 
+    /**
+     * @throws StatuswebErrorResponse
+     * @throws StatuswebException
+     */
     protected function doRequest(string $endpoint, array $data = [], bool $authentication = true): array
     {
         if ($authentication) {
@@ -49,6 +53,10 @@ abstract class BaseEndpoint
         }
     }
 
+    /**
+     * @throws StatuswebErrorResponse
+     * @throws StatuswebException
+     */
     private function login(): string
     {
         $store = $this->client->getSessionStore();
@@ -58,9 +66,10 @@ abstract class BaseEndpoint
         if ($session === null || new DateTime() > new DateTime($session->getExpirationDate())) {
             $sessionResponse = $this->client->session()->get();
 
-            $session = (new Session)
-                ->setExpirationDate($sessionResponse->getExpirationDate())
-                ->setSessionId($sessionResponse->getSessionId());
+            $session = new Session(
+                $sessionResponse->getSessionId(),
+                $sessionResponse->getExpirationDate(),
+            );
 
             $store->put($this->client->getApiKey(), $session);
         }

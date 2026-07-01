@@ -6,11 +6,14 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class DeliveryStatusItem implements Response
 {
-    private string $articleNumber;
-    private string $articleDescription;
-    private int $amount;
-    private int $status;
-    private string $statusDescription;
+    public function __construct(
+        private string $articleNumber,
+        private string $articleDescription,
+        private int $amount,
+        private int $status,
+        private string $statusDescription,
+    ) {
+    }
 
     public function setArticleNumber(string $articleNumber): static
     {
@@ -69,11 +72,12 @@ class DeliveryStatusItem implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setArticleNumber($response['Artikelnr'] ?? '')
-            ->setArticleDescription($response['ArtikelOmschrijving'] ?? '')
-            ->setAmount((int) ($response['Aantal'] ?? 0))
-            ->setStatus((int) ($response['Status'] ?? 0))
-            ->setStatusDescription($response['StatusOmschrijving'] ?? '');
+        return new static(
+            articleNumber: $response['Artikelnr'] ?? '',
+            articleDescription: $response['ArtikelOmschrijving'] ?? '',
+            amount: (int) ($response['Aantal'] ?? 0),
+            status: (int) ($response['Status'] ?? 0),
+            statusDescription: $response['StatusOmschrijving'] ?? '',
+        );
     }
 }

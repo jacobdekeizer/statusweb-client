@@ -6,9 +6,12 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class InventoryItem implements Response
 {
-    private string $articleNumber;
-    private string $articleDescription;
-    private int $amount;
+    public function __construct(
+        private string $articleNumber,
+        private string $articleDescription,
+        private int $amount,
+    ) {
+    }
 
     public function setArticleNumber(string $articleNumber): static
     {
@@ -45,9 +48,10 @@ class InventoryItem implements Response
 
     public static function fromResponse(array $response): static
     {
-        return (new static)
-            ->setArticleNumber($response['Artikelnr'] ?? '')
-            ->setArticleDescription($response['ArtikelOmschrijving'] ?? '')
-            ->setAmount((int) ($response['Aantal'] ?? 0));
+        return new static(
+            articleNumber: $response['Artikelnr'] ?? '',
+            articleDescription: $response['ArtikelOmschrijving'] ?? '',
+            amount: (int) ($response['Aantal'] ?? 0),
+        );
     }
 }

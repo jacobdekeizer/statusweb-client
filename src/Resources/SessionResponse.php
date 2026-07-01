@@ -6,15 +6,11 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class SessionResponse implements Response
 {
-    /**
-     * @var string
-     */
-    private $sessionId;
-
-    /**
-     * @var string
-     */
-    private $expirationDate;
+    public function __construct(
+        private string $sessionId,
+        private string $expirationDate,
+    ) {
+    }
 
     /**
      * @param string $sessionId
@@ -58,8 +54,9 @@ class SessionResponse implements Response
      */
     public static function fromResponse(array $response): Response
     {
-        return (new self)
-            ->setSessionId($response['SessionID'])
-            ->setExpirationDate($response['ExpirationDate']);
+        return new self(
+            sessionId: $response['SessionID'],
+            expirationDate: $response['ExpirationDate'],
+        );
     }
 }
