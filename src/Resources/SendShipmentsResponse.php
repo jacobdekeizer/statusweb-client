@@ -7,37 +7,45 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 class SendShipmentsResponse implements Response
 {
     /**
-     * @var SendShipmentResponse[]
+     * @param SendShipmentResponse[] $shipments
      */
-    private $sendShipmentData;
+    public function __construct(
+        private array $shipments = [],
+    ) {
+    }
 
     /**
-     * @param SendShipmentResponse[] $sendShipmentData
-     * @return SendShipmentsResponse
+     * @param SendShipmentResponse[] $shipments
      */
-    public function setSendShipmentData(array $sendShipmentData): SendShipmentsResponse
+    public function setShipments(array $shipments): static
     {
-        $this->sendShipmentData = $sendShipmentData;
+        $this->shipments = $shipments;
         return $this;
     }
 
-    /**
-     * @return SendShipmentResponse[]
-     */
-    public function getSendShipmentData(): array
+    /** @return SendShipmentResponse[] */
+    public function getShipments(): array
     {
-        return $this->sendShipmentData;
+        return $this->shipments;
     }
 
-    /**
-     * @inheritDoc
-     * @return SendShipmentsResponse
-     */
-    public static function fromResponse(array $response): Response
+    public static function fromResponse(array $response): static
     {
-        return (new self)
-            ->setSendShipmentData(array_map(static function (array $sendShipmentData): SendShipmentResponse {
-                return SendShipmentResponse::fromResponse($sendShipmentData);
-            }, $response['Zendingen'] ?? []));
+        $zendingen = $response['Zendingen'] ?? [];
+
+        $items = [];
+        if (isset($zendingen['SendZendingData'])) {
+            $data = $zendingen['SendZendingData'];
+            // normalize single item (associative) vs multiple items (indexed)
+            if (isset($data['Zendingnummer'])) {
+                $data = [$data];
+            }
+            $items = array_map(
+                static fn(array $item) => SendShipmentResponse::fromResponse($item),
+                $data,
+            );
+        }
+
+        return new static(shipments: $items);
     }
 }

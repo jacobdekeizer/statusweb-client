@@ -6,204 +6,117 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class StatusDataResponse implements Response
 {
-    /**
-     * @var float
-     */
-    private $transportNumber;
+    public function __construct(
+        private int $shipmentNumber,
+        private string $date,
+        private string $time,
+        private int $statusNumber,
+        private string $statusDescription,
+        private int $uid,
+        private ?string $reference = null,
+        private ?string $note = null,
+    ) {
+    }
 
-    /**
-     * @var string|null
-     */
-    private $reference;
-
-    /**
-     * @var string
-     */
-    private $date;
-
-    /**
-     * @var string
-     */
-    private $time;
-
-    /**
-     * @var int
-     */
-    private $statusNumber;
-
-    /**
-     * @var string
-     */
-    private $statusDescription;
-
-    /**
-     * @var string|null
-     */
-    private $note;
-
-    /**
-     * @var int
-     */
-    private $uid;
-
-    /**
-     * @param float $transportNumber
-     * @return StatusDataResponse
-     */
-    public function setTransportNumber(float $transportNumber): StatusDataResponse
+    public function setShipmentNumber(int $shipmentNumber): static
     {
-        $this->transportNumber = $transportNumber;
+        $this->shipmentNumber = $shipmentNumber;
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getTransportNumber(): float
+    public function getShipmentNumber(): int
     {
-        return $this->transportNumber;
+        return $this->shipmentNumber;
     }
 
-    /**
-     * @param string|null $reference
-     * @return StatusDataResponse
-     */
-    public function setReference(?string $reference): StatusDataResponse
+    public function setReference(?string $reference): static
     {
         $this->reference = $reference;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    /**
-     * @param string $date
-     * @return StatusDataResponse
-     */
-    public function setDate(string $date): StatusDataResponse
+    public function setDate(string $date): static
     {
         $this->date = $date;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDate(): string
     {
         return $this->date;
     }
 
-    /**
-     * @param string $time
-     * @return StatusDataResponse
-     */
-    public function setTime(string $time): StatusDataResponse
+    public function setTime(string $time): static
     {
         $this->time = $time;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTime(): string
     {
         return $this->time;
     }
 
-    /**
-     * @param int $statusNumber
-     * @return StatusDataResponse
-     */
-    public function setStatusNumber(int $statusNumber): StatusDataResponse
+    public function setStatusNumber(int $statusNumber): static
     {
         $this->statusNumber = $statusNumber;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getStatusNumber(): int
     {
         return $this->statusNumber;
     }
 
-    /**
-     * @param string $statusDescription
-     * @return StatusDataResponse
-     */
-    public function setStatusDescription(string $statusDescription): StatusDataResponse
+    public function setStatusDescription(string $statusDescription): static
     {
         $this->statusDescription = $statusDescription;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getStatusDescription(): string
     {
         return $this->statusDescription;
     }
 
-    /**
-     * @param string|null $note
-     * @return StatusDataResponse
-     */
-    public function setNote(?string $note): StatusDataResponse
+    public function setNote(?string $note): static
     {
         $this->note = $note;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getNote(): ?string
     {
         return $this->note;
     }
 
-    /**
-     * @param int $uid
-     * @return StatusDataResponse
-     */
-    public function setUid(int $uid): StatusDataResponse
+    public function setUid(int $uid): static
     {
         $this->uid = $uid;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getUid(): int
     {
         return $this->uid;
     }
 
-    /**
-     * @inheritDoc
-     * @return StatusDataResponse
-     */
-    public static function fromResponse(array $response): Response
+    public static function fromResponse(array $response): static
     {
-        return (new self)
-            ->setTransportNumber($response['Vrachtnummer'])
-            ->setReference($response['Kenmerk'] ?? null)
-            ->setDate($response['Datum'])
-            ->setTime($response['Tijd'])
-            ->setStatusNumber($response['StatusNummer'])
-            ->setStatusDescription($response['StatusOmschrijving'])
-            ->setNote($response['Opmerking'])
-            ->setUid($response['UID']);
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            date: $response['Datum'] ?? '',
+            time: $response['Tijd'] ?? '',
+            statusNumber: (int) ($response['StatusNummer'] ?? 0),
+            statusDescription: $response['StatusOmschrijving'] ?? '',
+            uid: (int) ($response['UID'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            note: $response['Opmerking'] ?? null,
+        );
     }
 }

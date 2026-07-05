@@ -4,11 +4,15 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class DeleteShipmentResponse implements Response
+class PhotoResponse implements Response
 {
+    /**
+     * @param PhotoData[] $photos
+     */
     public function __construct(
         private int $shipmentNumber,
         private ?string $reference = null,
+        private array $photos = [],
     ) {
     }
 
@@ -34,11 +38,36 @@ class DeleteShipmentResponse implements Response
         return $this->reference;
     }
 
+    /**
+     * @param PhotoData[] $photos
+     */
+    public function setPhotos(array $photos): static
+    {
+        $this->photos = $photos;
+        return $this;
+    }
+
+    /** @return PhotoData[] */
+    public function getPhotos(): array
+    {
+        return $this->photos;
+    }
+
     public static function fromResponse(array $response): static
     {
+        $photos = [];
+        if (isset($response['Fotos']['FotoData'])) {
+            $data = $response['Fotos']['FotoData'];
+            if (isset($data['Bestandsnaam'])) {
+                $data = [$data];
+            }
+            $photos = array_map(static fn(array $f) => PhotoData::fromResponse($f), $data);
+        }
+
         return new static(
             shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
             reference: $response['Kenmerk'] ?? null,
+            photos: $photos,
         );
     }
 }

@@ -4,17 +4,20 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class LabelResponse implements Response
+class AddShipmentRowResponse implements Response
 {
     /**
      * @param string[] $barcodes
+     * @param int[] $rowIds
      */
     public function __construct(
         private int $shipmentNumber,
         private ?string $reference = null,
         private ?string $labels = null,
         private ?int $labelLength = null,
+        private ?string $statuswebLink = null,
         private array $barcodes = [],
+        private array $rowIds = [],
     ) {
     }
 
@@ -62,6 +65,17 @@ class LabelResponse implements Response
         return $this->labelLength;
     }
 
+    public function setStatuswebLink(?string $statuswebLink): static
+    {
+        $this->statuswebLink = $statuswebLink;
+        return $this;
+    }
+
+    public function getStatuswebLink(): ?string
+    {
+        return $this->statuswebLink;
+    }
+
     /**
      * @param string[] $barcodes
      */
@@ -77,6 +91,21 @@ class LabelResponse implements Response
         return $this->barcodes;
     }
 
+    /**
+     * @param int[] $rowIds
+     */
+    public function setRowIds(array $rowIds): static
+    {
+        $this->rowIds = $rowIds;
+        return $this;
+    }
+
+    /** @return int[] */
+    public function getRowIds(): array
+    {
+        return $this->rowIds;
+    }
+
     public static function fromResponse(array $response): static
     {
         return new static(
@@ -84,7 +113,9 @@ class LabelResponse implements Response
             reference: $response['Kenmerk'] ?? null,
             labels: $response['Labels'] ?? null,
             labelLength: isset($response['LabelLengte']) ? (int) $response['LabelLengte'] : null,
+            statuswebLink: $response['StatuswebLink'] ?? null,
             barcodes: self::extractBarcodes($response),
+            rowIds: self::extractIds($response['Regel_IDs'] ?? null),
         );
     }
 
@@ -98,5 +129,13 @@ class LabelResponse implements Response
             return [$data['Barcode']];
         }
         return array_column($data, 'Barcode');
+    }
+
+    private static function extractIds(mixed $ids): array
+    {
+        if ($ids === null || !is_array($ids)) {
+            return [];
+        }
+        return array_values(array_filter($ids, 'is_numeric'));
     }
 }

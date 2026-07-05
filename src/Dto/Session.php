@@ -6,55 +6,22 @@ use JacobDeKeizer\Statusweb\Contracts\Dto;
 
 class Session implements Dto
 {
-    /**
-     * @var string
-     */
-    private $sessionId;
-
-    /**
-     * @var string
-     */
-    private $expirationDate;
-
-    /**
-     * @param string $sessionId
-     * @return Session
-     */
-    public function setSessionId(string $sessionId): Session
-    {
-        $this->sessionId = $sessionId;
-        return $this;
+    public function __construct(
+        private readonly string $sessionId,
+        private readonly string $expirationDate,
+    ) {
     }
 
-    /**
-     * @return string
-     */
     public function getSessionId(): string
     {
         return $this->sessionId;
     }
 
-    /**
-     * @param string $expirationDate
-     * @return Session
-     */
-    public function setExpirationDate(string $expirationDate): Session
-    {
-        $this->expirationDate = $expirationDate;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getExpirationDate(): string
     {
         return $this->expirationDate;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function toArray(): array
     {
         return [
@@ -63,14 +30,11 @@ class Session implements Dto
         ];
     }
 
-    /**
-     * @inheritDoc
-     * @return Session
-     */
     public static function fromArray(array $data): Dto
     {
-        return (new self)
-            ->setSessionId($data['session_id'])
-            ->setExpirationDate($data['expiration_date']);
+        return new self(
+            $data['session_id'],
+            $data['expiration_date'],
+        );
     }
 }

@@ -15,7 +15,8 @@ class ResponseCode
     public const HOUSE_NUMBER_INVALID = -102;
     public const POSTAL_CODE_INVALID = -103;
     public const PLACE_INVALID = -104;
-    public const COUNTRY_CODE_INVALID = -105;
+    public const COUNTRY_CODE_DELIVERY_INVALID = -105;
+    public const COUNTRY_CODE_LOADING_INVALID = -111;
     public const SHIPMENT_TYPE_INVALID = -107;
     public const SHIPMENT_ROW_AMOUNT_INVALID = -108;
     public const SHIPMENT_ROW_UNIT_INVALID = -109;
@@ -27,7 +28,7 @@ class ResponseCode
     public const INSUFFICIENT_STOCK_FOR_SOME_ARTICLES = -300;
     public const UNKNOWN_ARTICLE = -310;
     public const NO_AMOUNT_FOR_SOME_ARTICLES = -320;
-    public const NO_ETA_FOR_SHIPMENT = -320;
+    public const NO_ETA_FOR_SHIPMENT = -400;
     public const NO_STATUS_URL_FOR_SHIPMENT = -500;
-    public const UNKNOWN_RESULT_ID = -550;
+    public const DELIVERY_REQUEST_NOT_FOUND = -550;
 }

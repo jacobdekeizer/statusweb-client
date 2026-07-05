@@ -29,33 +29,39 @@ $client = (new \JacobDeKeizer\Statusweb\Client())
 ### Create shipment
 
 ```php
-$deliveryAddress = (new \JacobDeKeizer\Statusweb\Resources\Address())
-    ->setStreet('Lange laan')
-    ->setCity('Zevenaar')
-    ->setHouseNumber('29A')
-    ->setPostalCode('9281EM')
-    ->setCountryCode(\JacobDeKeizer\Statusweb\Enums\CountryCode::NETHERLANDS)
-    ->setEmail('noreply@example.com')
-    ->setToTheAttentionOf('tav')
-    ->setPhoneNumber('+31612345678')
-    ->setName('Gijs Boersma');
+$deliveryAddress = new \JacobDeKeizer\Statusweb\Resources\Address(
+    name: 'Gijs Boersma',
+    street: 'Lange laan',
+    houseNumber: '29A',
+    postalCode: '9281EM',
+    city: 'Zevenaar',
+    countryCode: \JacobDeKeizer\Statusweb\Enums\CountryCode::NETHERLANDS,
+    toTheAttentionOf: 'tav',
+    phoneNumber: '+31612345678',
+    email: 'noreply@example.com',
+);
 
-$labelData = (new \JacobDeKeizer\Statusweb\Resources\LabelData())
-    ->setLabelFormat(\JacobDeKeizer\Statusweb\Enums\LabelFormat::PDF)
-    ->setReturnLabel(true); // return the pdf label in the response
+$labelData = new \JacobDeKeizer\Statusweb\Resources\LabelData(
+    returnLabel: true, // return the pdf label in the response
+    labelFormat: \JacobDeKeizer\Statusweb\Enums\LabelFormat::PDF,
+);
 
-$shipmentRow = (new \JacobDeKeizer\Statusweb\Resources\ShipmentRow())
-    ->setAmount(1)
-    ->setWeight(10)
-    ->setUnit(\JacobDeKeizer\Statusweb\Enums\Unit::COLLI);
+$shipmentRow = new \JacobDeKeizer\Statusweb\Resources\ShipmentRow(
+    amount: 1,
+    unit: \JacobDeKeizer\Statusweb\Enums\Unit::COLLI,
+    weight: 10,
+);
 
-$shipment = (new \JacobDeKeizer\Statusweb\Resources\Shipment())
-    ->setReference('My reference')
-    ->setDeliveryAddress($deliveryAddress)
-    ->setType(1) // Statusweb -> Tabellen -> Zendingsoorten
-    ->setDirectSend(true) // when true the shipment is confirmed and can't be deleted
-    ->setLabelData($labelData)
-    ->addShipmentRow($shipmentRow); // ->setShipmentRows accepts an array of ShipmentRows
+$shipment = new \JacobDeKeizer\Statusweb\Resources\Shipment(
+    deliveryAddress: $deliveryAddress,
+    type: 1, // Statusweb -> Tabellen -> Zendingsoorten
+    directSend: true, // when true the shipment is confirmed and can't be deleted
+    labelData: $labelData,
+    reference: 'My reference',
+);
+
+// setters remain available for optional values
+$shipment->addShipmentRow($shipmentRow); // ->setShipmentRows accepts an array of ShipmentRows
 
 $shipmentResponse = $client->shipments()->create($shipment);
 

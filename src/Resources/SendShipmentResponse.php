@@ -6,60 +6,52 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class SendShipmentResponse implements Response
 {
-    /**
-     * @var float
-     */
-    private $transportNumber;
+    public function __construct(
+        private int $shipmentNumber,
+        private ?string $reference = null,
+        private ?string $statuswebLink = null,
+    ) {
+    }
 
-    /**
-     * @var string|null
-     */
-    private $reference;
-
-    /**
-     * @param float $transportNumber
-     * @return SendShipmentResponse
-     */
-    public function setTransportNumber(float $transportNumber): SendShipmentResponse
+    public function setShipmentNumber(int $shipmentNumber): static
     {
-        $this->transportNumber = $transportNumber;
+        $this->shipmentNumber = $shipmentNumber;
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getTransportNumber(): float
+    public function getShipmentNumber(): int
     {
-        return $this->transportNumber;
+        return $this->shipmentNumber;
     }
 
-    /**
-     * @param string|null $reference
-     * @return SendShipmentResponse
-     */
-    public function setReference(?string $reference): SendShipmentResponse
+    public function setReference(?string $reference): static
     {
         $this->reference = $reference;
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    /**
-     * @inheritDoc
-     * @return SendShipmentResponse
-     */
-    public static function fromResponse(array $response): Response
+    public function setStatuswebLink(?string $statuswebLink): static
     {
-        return (new self)
-            ->setTransportNumber($response['Vrachtnummer'])
-            ->setReference($response['Kenmerk'] ?? null);
+        $this->statuswebLink = $statuswebLink;
+        return $this;
+    }
+
+    public function getStatuswebLink(): ?string
+    {
+        return $this->statuswebLink;
+    }
+
+    public static function fromResponse(array $response): static
+    {
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            reference: $response['Kenmerk'] ?? null,
+            statuswebLink: $response['StatuswebLink'] ?? null,
+        );
     }
 }

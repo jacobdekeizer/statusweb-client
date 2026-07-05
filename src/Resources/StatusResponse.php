@@ -7,37 +7,72 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 class StatusResponse implements Response
 {
     /**
-     * @var StatusDataResponse[]
+     * @param StatusDataResponse[] $statuses
      */
-    private $statuses;
+    public function __construct(
+        private bool $hasMore,
+        private array $statuses = [],
+        private ?string $mark = null,
+    ) {
+    }
 
     /**
      * @param StatusDataResponse[] $statuses
-     * @return StatusResponse
      */
-    public function setStatuses(array $statuses): StatusResponse
+    public function setStatuses(array $statuses): static
     {
         $this->statuses = $statuses;
         return $this;
     }
 
-    /**
-     * @return StatusDataResponse[]
-     */
+    /** @return StatusDataResponse[] */
     public function getStatuses(): array
     {
         return $this->statuses;
     }
 
-    /**
-     * @inheritDoc
-     * @return StatusResponse
-     */
-    public static function fromResponse(array $response): Response
+    public function setMark(?string $mark): static
     {
-        return (new self)
-            ->setStatuses(array_map(static function (array $statusData) {
-                return StatusDataResponse::fromResponse($statusData);
-            }, $response['Status']));
+        $this->mark = $mark;
+        return $this;
+    }
+
+    public function getMark(): ?string
+    {
+        return $this->mark;
+    }
+
+    public function setHasMore(bool $hasMore): static
+    {
+        $this->hasMore = $hasMore;
+        return $this;
+    }
+
+    public function hasMore(): bool
+    {
+        return $this->hasMore;
+    }
+
+    public static function fromResponse(array $response): static
+    {
+        $statusData = $response['Status'] ?? [];
+
+        $items = [];
+        if (isset($statusData['StatusMeldingData'])) {
+            $data = $statusData['StatusMeldingData'];
+            if (isset($data['Zendingnummer'])) {
+                $data = [$data];
+            }
+            $items = array_map(
+                static fn(array $item) => StatusDataResponse::fromResponse($item),
+                $data,
+            );
+        }
+
+        return new static(
+            hasMore: ($response['More'] ?? 0) === 1,
+            statuses: $items,
+            mark: $response['Mark'] ?? null,
+        );
     }
 }

@@ -6,60 +6,65 @@ use JacobDeKeizer\Statusweb\Contracts\Response;
 
 class EtaResponse implements Response
 {
-    /**
-     * @var string
-     */
-    private $from;
+    public function __construct(
+        private int $shipmentNumber,
+        private string $from,
+        private string $until,
+        private ?string $reference = null,
+    ) {
+    }
 
-    /**
-     * @var string
-     */
-    private $until;
+    public function setShipmentNumber(int $shipmentNumber): static
+    {
+        $this->shipmentNumber = $shipmentNumber;
+        return $this;
+    }
 
-    /**
-     * @param string $from
-     * @return EtaResponse
-     */
-    public function setFrom(string $from): EtaResponse
+    public function getShipmentNumber(): int
+    {
+        return $this->shipmentNumber;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setFrom(string $from): static
     {
         $this->from = $from;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getFrom(): string
     {
         return $this->from;
     }
 
-    /**
-     * @param string $until
-     * @return EtaResponse
-     */
-    public function setUntil(string $until): EtaResponse
+    public function setUntil(string $until): static
     {
         $this->until = $until;
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUntil(): string
     {
         return $this->until;
     }
 
-    /**
-     * @inheritDoc
-     * @return EtaResponse
-     */
-    public static function fromResponse(array $response): Response
+    public static function fromResponse(array $response): static
     {
-        return (new self)
-            ->setFrom($response['ETA_Van'])
-            ->setUntil($response['ETA_Tot']);
+        return new static(
+            shipmentNumber: (int) ($response['Zendingnummer'] ?? 0),
+            from: $response['ETA_Van'] ?? '',
+            until: $response['ETA_Tot'] ?? '',
+            reference: $response['Kenmerk'] ?? null,
+        );
     }
 }

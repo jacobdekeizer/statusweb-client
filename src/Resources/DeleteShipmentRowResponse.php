@@ -4,7 +4,7 @@ namespace JacobDeKeizer\Statusweb\Resources;
 
 use JacobDeKeizer\Statusweb\Contracts\Response;
 
-class DeleteShipmentResponse implements Response
+class DeleteShipmentRowResponse implements Response
 {
     public function __construct(
         private int $shipmentNumber,
